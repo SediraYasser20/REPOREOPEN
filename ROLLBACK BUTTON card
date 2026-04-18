@@ -1,0 +1,49 @@
+	// Rollback to In Progress action (revert closed to validated)
+	if ($action == 'confirm_rollback_to_inprogress' && $confirm == 'yes') {
+		if (!$user->hasRight('customerreturn', 'creer') && !$user->admin) {
+			setEventMessages($langs->trans("NotEnoughPermissions"), null, 'errors');
+			$action = '';
+		} else {
+			$result = $object->rollbackToInProgress($user);
+			if ($result > 0) {
+				setEventMessages($langs->trans('CustomerReturnRolledBackToInProgress'), null, 'mesgs');
+				header("Location: ".$_SERVER['PHP_SELF']."?id=".$object->id);
+				exit;
+			} else {
+				setEventMessages($object->error, $object->errors, 'errors');
+				$action = '';
+			}
+		}
+	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+AFTER 	
+
+	// Back to draft action (revert validated/closed to draft)
+	if ($action == 'confirm_backtodraft' && $confirm == 'yes') {
+		if (!$user->hasRight('customerreturn', 'creer') && !$user->admin) {
+			setEventMessages($langs->trans("NotEnoughPermissions"), null, 'errors');
+			$action = '';
+		} else {
+			$result = $object->backToDraft($user);
+			if ($result > 0) {
+				setEventMessages($langs->trans('CustomerReturnSetToDraft'), null, 'mesgs');
+				header("Location: ".$_SERVER['PHP_SELF']."?id=".$object->id);
+				exit;
+			} else {
+				setEventMessages($object->error, $object->errors, 'errors');
+				$action = '';
+			}
+		}
+	}
